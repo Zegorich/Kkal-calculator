@@ -4,7 +4,6 @@ from django.urls import reverse
 
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -13,10 +12,14 @@ class User(AbstractUser):
     desired_weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     telegram = models.CharField(max_length=100)
     email = models.EmailField()
-    registration_code_flag = models.BooleanField(verbose_name='без имени', blank=True, null=True, default=0)
 
     def __str__(self):
-        return self.nickname
+        return self.username
+
+
+class Weight(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    current_weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
 
 class Product(models.Model):

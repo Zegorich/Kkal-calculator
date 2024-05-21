@@ -109,18 +109,30 @@ def daily_calories_intake(request):
 @login_required
 def profile_view(request):
     user = request.user
-    if user.registration_code_flag == 0:
-        a = 0
-        user.registration_code = a
 
-    if request.method == 'POST':
-        a = random.randint(1, 1000000)
-        flag = True
-        user.registration_code = a
+    if request.POST:
+        response = request.POST
+        first_name = response['first-name']
+        last_name = response['last-name']
+        age = response['age']
+        sex = response['sex']
+        current_weight = response['current-weight']
+        desired_weight = response['desired-weight']
+        telegram = response['telegram']
+        email = response['email']
+
+        my_user = get_object_or_404(User, username=user)
+        my_user.first_name = first_name
+        my_user.last_name = last_name
+        my_user.age = int(age)
+        my_user.sex = sex
+        my_user.current_weight = current_weight
+        my_user.desired_weight = desired_weight
+        my_user.telegram = telegram
+        my_user.email = email
+        my_user.save()
 
 
-        user.registration_code_flag = flag
-        user.save()
     return render(request, 'registration/profile.html')
 
 class register_view(FormView):

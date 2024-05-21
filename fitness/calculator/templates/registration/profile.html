@@ -5,7 +5,30 @@
 {% block content %}
 
 <h1> Добро пожаловать, {{ user.username }}</h1>
-<form method="post"> </form>
+  <form method="post">
+    {% csrf_token %}
+    <label for="first-name">Введите имя:</label>
+    <input type="text" id="first-name" name="first-name" required><br>
+    <label for="last-name">Введите фамилию:</label>
+    <input type="text" id="last-name" name="last-name" required><br>
+    <label for="last-name">Введите возраст:</label>
+    <input type="number" min="6" max="100" id="age" name="age" required><br>
+    <label>Укажите ваш пол:<br>
+        <input type="radio" id="male" name="sex" value="Male" required>
+        <label for="male">Мужчина</label><br>
+        <input type="radio" id="female" name="sex" value="Female" required>
+        <label for="female">Женщина</label>
+    </label><br>
+    <label for="current-weight">Введите текущий вес:</label>
+    <input type="number" min="0" max="600" id="current-weight" name="current-weight" required><br>
+    <label for="desired-weight">Введите желаемый вес:</label>
+    <input type="number" min="0" max="600" id="desired-weight" name="desired-weight" required><br>
+    <label for="email">Введите вашу почту:</label>
+    <input type="email" id="email" name="email" required><br>
+    <label for="telegram">Введите ваш ник в телеграме:</label>
+    <input type="text" id="telegram" name="telegram" required><br>
+    <input type="submit" value="Сохранить изменения" name="submit-profile-changes">
+  </form>
 
 <form action="{% url 'logout' %}?next=/profile" method="post">
   {% csrf_token %}
