@@ -4,7 +4,7 @@
 {% block content %}
 <ul>
     {% for cat in cats %}
-        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+        <li><a href="{% url 'calculator:category' cat_slug=cat.slug %}">{{ cat.name }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
