@@ -2,6 +2,26 @@
 
 {% block content %}
 
-{{ product }}
+<h1>{{product.name}}</h1>
+<table>
+    <tbody>
+        <tr>
+            <td>Калорийность</td>
+            <td>{{product.calories}} ккал.</td>
+        </tr>
+        <tr>
+            <td>Белки</td>
+            <td>{{product.protein}} г.</td>
+        </tr>
+        <tr>
+            <td>Жиры</td>
+            <td>{{product.fat}} г.</td>
+        </tr>
+        <tr>
+            <td>Углеводы</td>
+            <td>{{product.carbohydrates}} г.</td>
+        </tr>
+    </tbody>
+</table>
 
 {% endblock %}

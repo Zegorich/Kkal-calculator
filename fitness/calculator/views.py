@@ -22,7 +22,7 @@ def my_func(request):
     soup = bs(request.text, "html.parser")
     all_a = soup.find_all("a", class_="mzr-tc-group-item-href")
 
-    for a in all_a[11::]:
+    for a in all_a[50::]:
         request_ = requests.get(r"https://health-diet.ru" + a["href"], headers=headers)
         soup_ = bs(request_.text, 'html.parser')
         trs = soup_.find_all('tr')
