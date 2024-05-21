@@ -4,3 +4,5 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Product)
+admin.site.register(Weight)
+admin.site.register(Category)

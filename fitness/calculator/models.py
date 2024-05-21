@@ -24,7 +24,15 @@ class Weight(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    calories = models.PositiveIntegerField()
+    calories = models.DecimalField(max_digits=5, decimal_places=1)
     protein = models.DecimalField(max_digits=5, decimal_places=1)
     fat = models.DecimalField(max_digits=5, decimal_places=1)
     carbohydrates = models.DecimalField(max_digits=5, decimal_places=1)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
+class Category(models.Model):
+    name = models.TextField(max_length=100, db_index=True)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name

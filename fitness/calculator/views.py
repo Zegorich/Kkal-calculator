@@ -9,6 +9,58 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
 
+def my_func(request):
+    import requests
+    from bs4 import BeautifulSoup as bs
+    from transliterate import translit
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
+
+    request = requests.get(r"https://health-diet.ru/table_calorie/", headers=headers)
+    soup = bs(request.text, "html.parser")
+    all_a = soup.find_all("a", class_="mzr-tc-group-item-href")
+
+    for a in all_a[11::]:
+        request_ = requests.get(r"https://health-diet.ru" + a["href"], headers=headers)
+        soup_ = bs(request_.text, 'html.parser')
+        trs = soup_.find_all('tr')
+        all_a_ = []
+        for tr in trs[1:]:
+            all_a_.append(tr.findChild('a'))
+
+        for product in all_a_:
+            if product == None:
+                continue
+            request__ = requests.get(r'https://health-diet.ru' + product['href'], headers=headers)
+            soup__ = bs(request__.text, 'html.parser')
+            trs_ = soup__.find('table', class_='el-table').find_all('tr')
+            nutrients = {}
+
+            for tr_ in trs_[1:5]:
+                tr_td = tr_.find_all('td')[1:]
+                nutrients[tr_td[0].text] = tr_td[1].text.split()[0]
+
+            text = product.text
+            data = [text, nutrients, a.text]
+            print(data)
+            category_slug = translit(data[2], 'ru', reversed=True).lower().replace(' ', '-')
+            category, created = Category.objects.get_or_create(
+                name=data[2],
+                defaults={'slug': category_slug}
+            )
+
+            product = Product(
+                name=data[0],
+                calories=float(data[1]["Калории"]),
+                protein=float(data[1]['Белки']),
+                fat=float(data[1]['Жиры']),
+                carbohydrates=float(data[1]['Углеводы']),
+                category=category
+            )
+            product.save()
+
+
 class OneRepMaximum():
     def __init__(self, weight, reps):
         self.weight = weight
