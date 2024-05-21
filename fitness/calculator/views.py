@@ -10,6 +10,15 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 
 
+menu = [
+    {'title': 'Home', 'url_name': 'calculator:home'},
+    {'title': 'One rep maximum', 'url_name': 'calculator:one-rep-maximum'},
+    {'title': 'Daily calories intake', 'url_name': 'calculator:daily-calories-intake'},
+    {'title': 'Products categories', 'url_name': 'calculator:categories'},
+    {'title': 'Profile', 'url_name': 'calculator:profile'},
+    {'title': 'Sign up', 'url_name': 'calculator:register'},
+]
+
 def my_func(request):
     import requests
     from bs4 import BeautifulSoup as bs
@@ -128,6 +137,7 @@ class DailyCaloriesIntake():
 def index(request):
     context = {
         'title': 'Главная страница',
+        'menu': menu,
     }
     return render(request, 'calculator/index.html', context=context)
 
@@ -136,6 +146,7 @@ def one_rep_maximum(request):
     context = {
         'title': 'Одноповторный максимум',
         'maximum': '',
+        'menu': menu,
     }
     if request.POST:
         weight = float(request.POST['weight'])
@@ -147,6 +158,7 @@ def daily_calories_intake(request):
     context = {
         'title': 'Суточное потребление калорий',
         'calories': '',
+        'menu': menu,
     }
     if request.POST:
         response = request.POST
@@ -200,6 +212,7 @@ class register_view(FormView):
 def categories(request):
     context = {
         'title': 'Каталог товаров',
+        'menu': menu,
     }
     cats = Category.objects.all()
     context['cats'] = cats
@@ -209,6 +222,7 @@ def categories(request):
 def category(requests, cat_slug):
     context = {
         'title': 'Каталог товаров',
+        'menu': menu,
     }
 
     products = Category.objects.get(slug=cat_slug).product_set.all()
@@ -220,7 +234,8 @@ def product(requests, productid):
     p = Product.objects.get(pk=productid)
     context = context = {
         'title': p.name,
-        'product': p
+        'product': p,
+        'menu': menu,
     }
 
 

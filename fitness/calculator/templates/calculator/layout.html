@@ -23,11 +23,9 @@
              </a>
 
 
-             <a class="navbar-brand" href="/one-rep-maximum">
-             </a>
-
-             <a class="navbar-brand" href="/profile">
-             </a>
+             {% for m in menu %}
+             <a class="navbar-brand" href="{% url m.url_name %}">{{m.title}}</a>
+             {% endfor %}
          </div>
       </nav>
      {% block content %}
