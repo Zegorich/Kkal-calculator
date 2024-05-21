@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="weight">Введите вес:</label>
+        <input type="number" min="1" id="weight" name="weight" placeholder="Вес" required><br>
+        <label for="weight">Введите количество повторений:</label>
+        <input type="number" min="2" max="36" id="reps" name="reps" placeholder="Повторения" required><br>
+        <input type="submit">
+    </form>
+    {% if maximum %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Формула</th>
+                    <th>Максимум</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Бойд Эпли</td>
+                    <td>{{maximum.BoydEpley}}</td>
+                </tr>
+                <tr>
+                    <td>Мэтт Бржицки</td>
+                    <td>{{maximum.MattBrzycki}}</td>
+                </tr>
+                <tr>
+                    <td>МакГлотин</td>
+                    <td>{{maximum.McGlothin}}</td>
+                </tr>
+                <tr>
+                    <td>Лэндер</td>
+                    <td>{{maximum.Lander}}</td>
+                </tr>
+                <tr>
+                    <td>Ломбарди</td>
+                    <td>{{maximum.Lombardi}}</td>
+                </tr>
+                <tr>
+                    <td>Мэйхью</td>
+                    <td>{{maximum.Mayhew}}</td>
+                </tr>
+                <tr>
+                    <td>О'Коннор</td>
+                    <td>{{maximum.OConner}}</td>
+                </tr>
+                <tr>
+                    <td>Ватан</td>
+                    <td>{{maximum.Wathan}}</td>
+                </tr>
+                <tr>
+                    <td>Вендлер</td>
+                    <td>{{maximum.Wendler}}</td>
+                </tr>
+                <tr>
+                    <td><b>Средний максимум</b></td>
+                    <td><b>{{maximum.AvgMaximum}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
