@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="age">Введите возраст:</label>
+        <input type="number" min="1" max="100" id="age" name="age" placeholder="Возраст" required><br>
+        <label for="weight">Введите вес:</label>
+        <input type="number" min="0" id="weight" name="weight" placeholder="Вес в кг." required><br>
+        <label for="height">Введите рост:</label>
+        <input type="number" min="0" id="height" name="height" placeholder="Рост в см." required><br>
+        <label>Укажите ваш пол:<br>
+            <input type="radio" id="male" name="sex" value="male" required>
+            <label for="male">Мужчина</label><br>
+            <input type="radio" id="female" name="sex" value="female" required>
+            <label for="female">Женщина</label><br>
+        </label>
+        <label for="activity">Выберите уровень активности:</label>
+        <select name="activity" id="activity" required>
+            <option value="1.2">минимальная активность</option>
+            <option value="1.375">слабый уровень активности</option>
+            <option value="1.55">умеренный уровень активности</option>
+            <option value="1.7">тяжелая или трудоемкая активность</option>
+            <option value="1.9">экстремальный уровень</option>
+        </select><br>
+        <input type="submit">
+    </form>
+    {% if calories %}
+        <table border="1px solid black">
+        <thead>
+            <tr>
+                <th></th>
+                <th>На сушку</th>
+                <th>На поддержание веса</th>
+                <th>На набор</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Суточное потребление калорий, ккал</th>
+                <td>{{calories.cut.0}} - {{calories.cut.1}}</td>
+                <td>{{calories.calculate_calories_intake}}</td>
+                <td>{{calories.bulk.0}} - {{calories.bulk.1}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+{% endblock %}
