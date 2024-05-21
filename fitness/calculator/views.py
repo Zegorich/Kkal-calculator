@@ -194,3 +194,24 @@ class register_view(FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+def categories(request):
+    context = {
+        'title': 'Каталог товаров',
+    }
+    cats = Category.objects.all()
+    context['cats'] = cats
+
+    return render(request, 'calculator/categories.html', context=context)
+
+def category(requests, cat_slug):
+    context = {
+        'title': 'Каталог товаров',
+    }
+
+    products = Category.objects.get(slug=cat_slug).product_set.all()
+    context['products'] = products
+
+    return render(requests, 'calculator/products.html', context=context)
+
