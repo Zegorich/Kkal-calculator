@@ -5,7 +5,7 @@
 {% block content %}
 
 <h1> Добро пожаловать, {{ user.username }}</h1>
-
+<form method="post"> </form>
 
 <form action="{% url 'logout' %}?next=/profile" method="post">
   {% csrf_token %}
