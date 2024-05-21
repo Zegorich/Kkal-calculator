@@ -1,6 +1,12 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from math import e as exp
+import random
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.views.generic import FormView
+from .forms import RegisterForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import *
+from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 
 
 class OneRepMaximum():
@@ -70,7 +76,7 @@ def index(request):
     context = {
         'title': 'Главная страница',
     }
-    return render(request, 'index.html', context=context)
+    return render(request, 'calculator/index.html', context=context)
 
 
 def one_rep_maximum(request):
@@ -82,7 +88,7 @@ def one_rep_maximum(request):
         weight = float(request.POST['weight'])
         reps = float(request.POST['reps'])
         context['maximum'] = OneRepMaximum(weight, reps)
-    return render(request, 'one_rep_maximum.html', context=context)
+    return render(request, 'calculator/one_rep_maximum.html', context=context)
 
 def daily_calories_intake(request):
     context = {
@@ -98,4 +104,29 @@ def daily_calories_intake(request):
         activity = float(response['activity'])
         calories = DailyCaloriesIntake(age=age, weight=weight, height=height, sex=sex, activity=activity)
         context['calories'] = calories
-    return render(request, 'daily_calories_intake.html', context=context)
+    return render(request, 'calculator/daily_calories_intake.html', context=context)
+
+@login_required
+def profile_view(request):
+    user = request.user
+    if user.registration_code_flag == 0:
+        a = 0
+        user.registration_code = a
+
+    if request.method == 'POST':
+        a = random.randint(1, 1000000)
+        flag = True
+        user.registration_code = a
+
+
+        user.registration_code_flag = flag
+        user.save()
+    return render(request, 'registration/profile.html')
+
+class register_view(FormView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy("registration:profile")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
