@@ -216,3 +216,13 @@ def category(requests, cat_slug):
 
     return render(requests, 'calculator/products.html', context=context)
 
+def product(requests, productid):
+    p = Product.objects.get(pk=productid)
+    context = context = {
+        'title': p.name,
+        'product': p
+    }
+
+
+
+    return render(requests, 'calculator/product.html', context=context)
