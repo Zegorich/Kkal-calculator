@@ -10,4 +10,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('calculator.urls', 'calculator'), namespace='calculator')),
     path('accounts/', include('django.contrib.auth.urls')),
+
 ]
