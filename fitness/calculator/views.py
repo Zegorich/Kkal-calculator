@@ -41,6 +41,31 @@ class OneRepMaximum():
                 self.BoydEpley() + self.MattBrzycki() +
                 self.McGlothin() + self.Lander() + self.Lombardi()) / 9, 2)
 
+
+class DailyCaloriesIntake():
+    def __init__(self, age, weight, height, sex, activity):
+        self.age = age
+        self. weight = weight
+        self.height = height
+        self.sex = sex
+        self.activity = activity
+
+    def calculate_calories_intake(self):
+        if self.sex == "male":
+            return int((10 * self.weight + 6.25 * self.height - 5 * self.age + 5) * self.activity)
+        elif self.sex == 'female':
+            return int((10 * self.weight + 6.25 * self.height - 5 * self.age - 161) * self.activity)
+        else:
+            return None
+
+    def cut(self):
+        calories = self.calculate_calories_intake()
+        return (int(calories * 0.85), int(calories * 0.9))
+
+    def bulk(self):
+        calories = self.calculate_calories_intake()
+        return (int(calories * 1.1), int(calories * 1.15))
+
 def index(request):
     context = {
         'title': 'Главная страница',
@@ -58,3 +83,19 @@ def one_rep_maximum(request):
         reps = float(request.POST['reps'])
         context['maximum'] = OneRepMaximum(weight, reps)
     return render(request, 'one_rep_maximum.html', context=context)
+
+def daily_calories_intake(request):
+    context = {
+        'title': 'Суточное потребление калорий',
+        'calories': '',
+    }
+    if request.POST:
+        response = request.POST
+        age = int(response['age'])
+        weight = float(response['weight'])
+        height = float(response['height'])
+        sex = response['sex']
+        activity = float(response['activity'])
+        calories = DailyCaloriesIntake(age=age, weight=weight, height=height, sex=sex, activity=activity)
+        context['calories'] = calories
+    return render(request, 'daily_calories_intake.html', context=context)
