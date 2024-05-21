@@ -3,7 +3,7 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <label for="weight">Введите вес:</label>
+        <label for="weight">Введите вес снаряда:</label>
         <input type="number" min="1" id="weight" name="weight" placeholder="Вес" required><br>
         <label for="reps">Введите количество повторений:</label>
         <input type="number" min="2" max="36" id="reps" name="reps" placeholder="Повторения" required><br>
