@@ -1,0 +1,10 @@
+{% extends 'calculator/base.html '%}
+
+
+{% block content %}
+<ul>
+    {% for cat in cats %}
+        <li><a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

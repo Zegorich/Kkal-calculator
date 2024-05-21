@@ -1,0 +1,10 @@
+{% extends 'calculator/base.html '%}
+
+
+{% block content %}
+<ul>
+    {% for product in products %}
+        <li><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
