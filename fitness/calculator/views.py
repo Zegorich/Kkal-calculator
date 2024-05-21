@@ -126,7 +126,7 @@ def profile_view(request):
 class register_view(FormView):
     form_class = RegisterForm
     template_name = 'registration/register.html'
-    success_url = reverse_lazy("registration:profile")
+    success_url = reverse_lazy("calculator:profile")
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
