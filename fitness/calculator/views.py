@@ -246,9 +246,13 @@ def my_nutrition(request):
         'menu': menu,
     }
     if request.POST:
-        user = request.user
+        user = request.user.id
+        print(user)
         product_name = request.POST['product-search']
-
+        weight = request.POST['weight']
+        product_id = Product.objects.filter(name=product_name)[0].id
+        meal = request.POST['meal']
+        UserNutrition.objects.create(user_id=user, product_id=product_id, weight=weight, meal=meal)
     return render(request, 'calculator/my_nutrition.html', context=context)
 
 # views.py
