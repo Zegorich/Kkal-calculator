@@ -1,0 +1,34 @@
+{% extends 'calculator/layout.html' %}
+
+{% block title %}Мое питание{% endblock %}
+
+
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    <label for="product">Выберите продукт:</label>-->
+<!--    <input type="text" name="product" id="product"><br>-->
+<!--    <label for="weight">Введите вес продукта в граммах:</label>-->
+<!--    <input type="number" min="0" id="weight" name="weight">br-->
+<!--    <input type="submit" value="Добавить продукт">-->
+<!--</form>-->
+
+{% block content %}
+
+<input type="text" id="product-search" name="product-search">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $("#product-search").autocomplete({
+        source: '/search_products/',
+        minLength: 2,
+        select: function(event, ui) {
+            $('#product-search').val(ui.item.value);
+        }
+    });
+});
+</script>
+
+{% endblock %}

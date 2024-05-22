@@ -9,8 +9,10 @@ urlpatterns = [
     path('profile/', views.profile_view, name="profile"),
     path('register/', views.register_view.as_view(), name="register"),
     # path('add-products/', views.my_func),
+    path('my-nutrition/', views.my_nutrition, name='my-nutrition'),
     path('category/<slug:cat_slug>', views.category, name='category'),
     path('categories/', views.categories, name='categories'),
     path('product/<int:productid>/', views.product, name='product'),
+    path('search_products/', views.search_products, name='search_products')
 
 ]

@@ -14,9 +14,9 @@ menu = [
     {'title': 'Home', 'url_name': 'calculator:home'},
     {'title': 'One rep maximum', 'url_name': 'calculator:one-rep-maximum'},
     {'title': 'Daily calories intake', 'url_name': 'calculator:daily-calories-intake'},
+    {'title': 'My nutritions', 'url_name':'calculator:my-nutrition'},
     {'title': 'Products categories', 'url_name': 'calculator:categories'},
     {'title': 'Profile', 'url_name': 'calculator:profile'},
-    {'title': 'Sign up', 'url_name': 'calculator:register'},
 ]
 
 def my_func(request):
@@ -198,7 +198,7 @@ def profile_view(request):
         my_user.save()
 
 
-    return render(request, 'registration/profile.html')
+    return render(request, 'registration/profile.html', context={'menu':menu})
 
 class register_view(FormView):
     form_class = RegisterForm
@@ -238,6 +238,22 @@ def product(requests, productid):
         'menu': menu,
     }
 
-
-
     return render(requests, 'calculator/product.html', context=context)
+
+@login_required(login_url='/profile')
+def my_nutrition(request):
+    context = {
+        'menu': menu,
+    }
+
+    return render(request, 'calculator/my_nutrition.html', context=context)
+
+# views.py
+from django.http import JsonResponse
+from .models import Product
+
+def search_products(request):
+    if 'term' in request.GET:
+        qs = Product.objects.filter(name__icontains=request.GET.get('term'))
+        names = list(qs.values_list('name', flat=True))
+        return JsonResponse(names, safe=False)
