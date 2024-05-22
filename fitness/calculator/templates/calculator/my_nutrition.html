@@ -39,4 +39,32 @@
         });
     });
     </script>
+    <hr>
+    {% if products %}
+        <h2>Завтрак</h2>
+        <ul>
+            {% for p in products.1 %}
+                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г</li>
+            {% endfor %}
+        </ul>
+        <h2>Обед</h2>
+        <ul>
+            {% for p in products.2 %}
+                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г</li>
+            {% endfor %}
+        </ul>
+        <h2>Ужин</h2>
+        <ul>
+            {% for p in products.3 %}
+                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г</li>
+            {% endfor %}
+        </ul>
+        <h2>Перекус</h2>
+        <ul>
+            {% for p in products.4 %}
+                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г</li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
 {% endblock %}

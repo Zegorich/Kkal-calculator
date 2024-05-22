@@ -244,15 +244,43 @@ def product(requests, productid):
 def my_nutrition(request):
     context = {
         'menu': menu,
+        'products': '',
     }
+
+    user = request.user
+
     if request.POST:
-        user = request.user.id
-        print(user)
         product_name = request.POST['product-search']
         weight = request.POST['weight']
         product_id = Product.objects.filter(name=product_name)[0].id
         meal = request.POST['meal']
-        UserNutrition.objects.create(user_id=user, product_id=product_id, weight=weight, meal=meal)
+
+        usrntrtn = UserNutrition.objects.filter(user_id=user.id, product_id=product_id)
+        if usrntrtn:
+            usrntrtn[0].weight += float(weight)
+            usrntrtn[0].save()
+        else:
+            UserNutrition.objects.create(user_id=user.id, product_id=product_id, weight=weight, meal=meal)
+
+    products = User.objects.get(username=user).usernutrition_set.all()
+    if products:
+        meals = {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+        }
+        for p in products:
+            pr = Product.objects.get(pk=p.product_id)
+            meals[p.meal].append([
+                pr.name,
+                round(float(pr.calories)/100*float(p.weight), 2),
+                round(float(pr.protein)/100*float(p.weight), 2),
+                round(float(pr.fat)/100*float(p.weight), 2),
+                round(float(pr.carbohydrates)/100*float(p.weight), 2),
+                p.weight])
+        context['products'] = meals
+
     return render(request, 'calculator/my_nutrition.html', context=context)
 
 # views.py
