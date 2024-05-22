@@ -1,0 +1,22 @@
+#product-search {
+            width: 300px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .ui-autocomplete {
+            background-color: #fff;
+            width: 300px;
+            border: 1px solid #c5c5c5;
+            list-style-type: none;
+            padding-left: 0px;
+        }
+
+        .ui-autocomplete .ui-menu-item {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .ui-autocomplete .ui-menu-item:hover {
+            background-color: #f8f8f8;
+        }

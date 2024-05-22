@@ -245,6 +245,9 @@ def my_nutrition(request):
     context = {
         'menu': menu,
     }
+    if request.POST:
+        user = request.user
+        product_name = request.POST['product-search']
 
     return render(request, 'calculator/my_nutrition.html', context=context)
 
@@ -254,6 +257,6 @@ from .models import Product
 
 def search_products(request):
     if 'term' in request.GET:
-        qs = Product.objects.filter(name__icontains=request.GET.get('term'))
+        qs = Product.objects.filter(name__icontains=request.GET.get('term'))[:5]  # Ограничиваем до первых 5 совпадений
         names = list(qs.values_list('name', flat=True))
         return JsonResponse(names, safe=False)
