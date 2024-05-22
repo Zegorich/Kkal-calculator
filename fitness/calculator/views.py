@@ -1,3 +1,7 @@
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
 import random
 from math import e as exp
 from django.contrib.auth.decorators import login_required
@@ -170,35 +174,44 @@ def daily_calories_intake(request):
         calories = DailyCaloriesIntake(age=age, weight=weight, height=height, sex=sex, activity=activity)
         context['calories'] = calories
     return render(request, 'calculator/daily_calories_intake.html', context=context)
-
 @login_required
 def profile_view(request):
     user = request.user
 
-    if request.POST:
-        response = request.POST
-        first_name = response['first-name']
-        last_name = response['last-name']
-        age = response['age']
-        sex = response['sex']
-        current_weight = response['current-weight']
-        desired_weight = response['desired-weight']
-        telegram = response['telegram']
-        email = response['email']
+    if request.method == "POST":
+        first_name = request.POST.get('first-name', '')
+        last_name = request.POST.get('last-name', '')
+        age = request.POST.get('age', '')
+        sex = request.POST.get('sex', '')
+        current_weight = request.POST.get('current-weight', '')
+        desired_weight = request.POST.get('desired-weight', '')
+        telegram = request.GET.get('id')
+        email = request.POST.get('email', '')
+        if any([first_name, last_name, age, sex, current_weight, desired_weight, email]):
+            if first_name:
+                user.first_name = first_name
+            if last_name:
+                user.last_name = last_name
+            if age:
+                user.age = int(age) if age.isdigit() else None
+            if sex:
+                user.sex = sex
+            if current_weight:
+                user.current_weight = float(current_weight)
+            if desired_weight:
+                user.desired_weight = float(desired_weight)
+            if telegram:
+                user.telegram = telegram
+            if email:
+                user.email = email
+            user.save()
+            messages.success(request, 'Профиль успешно обновлён.')
+        else:
+            messages.error(request, 'Ошибка обновления профиля. Пожалуйста, заполните все поля правильно.')
+        return redirect('/profile')
+    return render(request, 'registration/profile.html', context={'user': user})
 
-        my_user = get_object_or_404(User, username=user)
-        my_user.first_name = first_name
-        my_user.last_name = last_name
-        my_user.age = int(age)
-        my_user.sex = sex
-        my_user.current_weight = current_weight
-        my_user.desired_weight = desired_weight
-        my_user.telegram = telegram
-        my_user.email = email
-        my_user.save()
 
-
-    return render(request, 'registration/profile.html', context={'menu':menu})
 
 class register_view(FormView):
     form_class = RegisterForm

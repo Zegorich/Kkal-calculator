@@ -1,41 +1,92 @@
 {% extends 'calculator/layout.html' %}
-{%  block title %}Страница профиля{% endblock %}
+{% block title %}Страница профиля{% endblock %}
 
 {% block content %}
-
-<h1> Добро пожаловать, {{ user.username }}</h1>
-  <form method="post">
+<div class="container mt-5">
+  <h1 class="mb-4">Добро пожаловать, {{ user.username }}</h1>
+  <form id="profile-form" method="post" class="needs-validation" novalidate>
     {% csrf_token %}
-    <label for="first-name">Введите имя:</label>
-    <input type="text" id="first-name" name="first-name" required><br>
-    <label for="last-name">Введите фамилию:</label>
-    <input type="text" id="last-name" name="last-name" required><br>
-    <label for="last-name">Введите возраст:</label>
-    <input type="number" min="6" max="100" id="age" name="age" required><br>
-    <label>Укажите ваш пол:<br>
-        <input type="radio" id="male" name="sex" value="Male" required>
-        <label for="male">Мужчина</label><br>
-        <input type="radio" id="female" name="sex" value="Female" required>
-        <label for="female">Женщина</label>
-    </label><br>
-    <label for="current-weight">Введите текущий вес:</label>
-    <input type="number" min="0" max="600" id="current-weight" name="current-weight" required><br>
-    <label for="desired-weight">Введите желаемый вес:</label>
-    <input type="number" min="0" max="600" id="desired-weight" name="desired-weight" required><br>
-    <label for="email">Введите вашу почту:</label>
-    <input type="email" id="email" name="email" required><br>
-    <label for="telegram">Введите ваш ник в телеграме:</label>
-    <input type="text" id="telegram" name="telegram" required><br>
-    <input type="submit" value="Сохранить изменения" name="submit-profile-changes">
+
+    <div class="form-group">
+      <label for="first-name">Введите имя:</label>
+      <input type="text" class="form-control" id="first-name" name="first-name" value="{{ user.first_name }}">
+    </div>
+
+    <div class="form-group">
+      <label for="last-name">Введите фамилию:</label>
+      <input type="text" class="form-control" id="last-name" name="last-name" value="{{ user.last_name }}">
+    </div>
+
+    <div class="form-group">
+      <label for="age">Введите возраст:</label>
+      <input type="number" class="form-control" id="age" name="age" min="6" max="100" value="{{ user.age }}">
+    </div>
+
+    <fieldset class="form-group">
+      <legend class="col-form-label pt-0">Укажите ваш пол:</legend>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" id="male" name="sex" value="Male" {% if user.sex == 'Male' %}checked{% endif %}>
+        <label class="form-check-label" for="male">Мужчина</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" id="female" name="sex" value="Female" {% if user.sex == 'Female' %}checked{% endif %}>
+        <label class="form-check-label" for="female">Женщина</label>
+      </div>
+    </fieldset>
+
+    <div class="form-group">
+      <label for="current-weight">Введите текущий вес:</label>
+      <input type="number" class="form-control" id="current-weight" name="current-weight" min="0" max="600" value="{{ user.current_weight }}">
+    </div>
+
+    <div class="form-group">
+      <label for="desired-weight">Введите желаемый вес:</label>
+      <input type="number" class="form-control" id="desired-weight" name="desired-weight" min="0" max="600" value="{{ user.desired_weight }}">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Введите вашу почту:</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+    </div>
+
+    <div class="form-group">
+  <script async src="https://telegram.org/js/telegram-widget.js?7" data-telegram-login="F17ness_Bot" data-size="large" data-radius="10" data-auth-url="http://127.0.0.1/profile"></script>
+      <script type="text/javascript">
+    function onTelegramAuth(user) {
+      console.log('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+      document.getElementById('telegram-id').value = user.id;
+    }
+  </script>
+</div>
+
+    <button type="submit" class="btn btn-primary" name="submit-profile-changes">Сохранить изменения</button>
   </form>
-<script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="F17ness_Bot" data-size="medium" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
-<script type="text/javascript">
-  function onTelegramAuth(user) {
-    alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+
+  <form action="{% url 'logout' %}?next=/profile" method="post" class="mt-3">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-secondary">Выйти из аккаунта</button>
+  </form>
+</div>
+
+
+
+<style>
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
   }
-</script>
-<form action="{% url 'logout' %}?next=/profile" method="post">
-  {% csrf_token %}
-  <button type="submit">Выйти из аккаунта</button>
-</form>
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-check {
+    margin-bottom: 10px;
+  }
+  .btn {
+    width: 100%;
+  }
+  .mt-3 {
+    margin-top: 15px;
+  }
+</style>
+
 {% endblock %}
