@@ -260,6 +260,10 @@ def my_nutrition(request):
     context = {
         'menu': menu,
         'products': '',
+        'calories': 0,
+        'proteins': 0,
+        'fats': 0,
+        'carbohydrates': 0,
     }
 
     user = request.user
@@ -270,7 +274,7 @@ def my_nutrition(request):
         product_id = Product.objects.filter(name=product_name)[0].id
         meal = request.POST['meal']
 
-        usrntrtn = UserNutrition.objects.filter(user_id=user.id, product_id=product_id)
+        usrntrtn = UserNutrition.objects.filter(user_id=user.id, product_id=product_id, meal=meal)
         if usrntrtn:
             usrntrtn[0].weight += float(weight)
             usrntrtn[0].save()
@@ -293,8 +297,21 @@ def my_nutrition(request):
                 round(float(pr.protein)/100*float(p.weight), 2),
                 round(float(pr.fat)/100*float(p.weight), 2),
                 round(float(pr.carbohydrates)/100*float(p.weight), 2),
-                p.weight])
+                p.weight,
+                pr.id])
         context['products'] = meals
+
+        for meal in meals:
+            for p in meals[meal]:
+                context['calories'] += p[1]
+                context['proteins'] += p[2]
+                context['fats'] += p[3]
+                context['carbohydrates'] += p[4]
+
+    context['calories'] = round(context['calories'], 2)
+    context['proteins'] = round(context['proteins'], 2)
+    context['fats'] = round(context['fats'], 2)
+    context['carbohydrates'] = round(context['carbohydrates'], 2)
 
     return render(request, 'calculator/my_nutrition.html', context=context)
 
@@ -307,3 +324,17 @@ def search_products(request):
         qs = Product.objects.filter(name__icontains=request.GET.get('term'))[:5]  # Ограничиваем до первых 5 совпадений
         names = list(qs.values_list('name', flat=True))
         return JsonResponse(names, safe=False)
+
+@login_required()
+def clear_product(request, product_id):
+    user = request.user
+    p = User.objects.get(username=user).usernutrition_set.get(product_id=product_id)
+    p.delete()
+    return redirect('calculator:my-nutrition')
+
+@login_required()
+def clear_all_products(request):
+    user = request.user
+    p = User.objects.get(username=user).usernutrition_set.all()
+    p.delete()
+    return redirect('calculator:my-nutrition')

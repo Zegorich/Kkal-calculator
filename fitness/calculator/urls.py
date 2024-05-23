@@ -15,5 +15,7 @@ urlpatterns = [
     path('category/<slug:cat_slug>', views.category, name='category'),
     path('categories/', views.categories, name='categories'),
     path('product/<int:productid>/', views.product, name='product'),
-    path('search_products/', views.search_products, name='search_products')
+    path('search_products/', views.search_products, name='search_products'),
+    path('clear-product-from-my-nutrition/<int:product_id>', views.clear_product, name='clear-product-from-my-nutrition'),
+    path('clear-all-products-from-my-nutrition/', views.clear_all_products, name='clear-all-products-from-my-nutrition'),
 ]

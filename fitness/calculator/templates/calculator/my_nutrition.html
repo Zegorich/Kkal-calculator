@@ -52,7 +52,9 @@
         {% for p in products.1 %}
         <li>
             {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+            <form action="{% url 'calculator:clear-product-from-my-nutrition' p.6 %}">
+                <input type="submit" value="Удалить" class="delete-product">
+            </form>
         </li>
         {% endfor %}
     </ul>
@@ -61,7 +63,9 @@
         {% for p in products.2 %}
         <li>
             {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+            <form action="{% url 'calculator:clear-product-from-my-nutrition' p.6 %}">
+                <input type="submit" value="Удалить" class="delete-product">
+            </form>
         </li>
         {% endfor %}
     </ul>
@@ -70,7 +74,9 @@
         {% for p in products.3 %}
         <li>
             {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+            <form action="{% url 'calculator:clear-product-from-my-nutrition' p.6 %}">
+                <input type="submit" value="Удалить" class="delete-product">
+            </form>
         </li>
         {% endfor %}
     </ul>
@@ -79,30 +85,24 @@
         {% for p in products.4 %}
         <li>
             {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+            <form action="{% url 'calculator:clear-product-from-my-nutrition' p.6 %}">
+                <input type="submit" value="Удалить" class="delete-product">
+            </form>
         </li>
         {% endfor %}
     </ul>
 
-    <button id="clear-all">Очистить все</button>
+    <h2>Суммарное количество нутриентов:</h2>
+    <ul>
+        <li>{{calories}} ккал.</li>
+        <li>{{proteins}} г. белков</li>
+        <li>{{fats}} г. жиров</li>
+        <li>{{carbohydrates}} г. углеводов</li>
+    </ul>
 
-
-    <script>
-        $(function () {
-            // Обработчик для кнопки "Удалить"
-            $(".delete-product").on("click", function () {
-                const productId = $(this).data("product-id");
-                // Отправьте запрос на сервер для удаления продукта с указанным ID
-                // (используйте AJAX или другой метод)
-            });
-
-            // Обработчик для кнопки "Очистить все"
-            $("#clear-all").on("click", function () {
-                // Отправьте запрос на сервер для удаления всех продуктов
-                // (используйте AJAX или другой метод)
-            });
-        });
-    </script>
+    <form action="{% url 'calculator:clear-all-products-from-my-nutrition' %}">
+        <input type="submit" value="Удалить всё" class="delete-product">
+    </form>
 
 
     {% endif %}
