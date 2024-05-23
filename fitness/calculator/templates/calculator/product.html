@@ -1,27 +1,28 @@
-{% extends 'calculator/layout.html '%}
+{% extends 'calculator/layout.html'%}
 
 {% block content %}
 
-<h1>{{product.name}}</h1>
-<table>
-    <tbody>
-        <tr>
-            <td>Калорийность</td>
-            <td>{{product.calories}} ккал.</td>
-        </tr>
-        <tr>
-            <td>Белки</td>
-            <td>{{product.protein}} г.</td>
-        </tr>
-        <tr>
-            <td>Жиры</td>
-            <td>{{product.fat}} г.</td>
-        </tr>
-        <tr>
-            <td>Углеводы</td>
-            <td>{{product.carbohydrates}} г.</td>
-        </tr>
-    </tbody>
-</table>
-
+<div class="container">
+    <h1>{{product.name}}</h1>
+    <table>
+        <tbody>
+            <tr>
+                <td>Калорийность</td>
+                <td>{{product.calories}} ккал.</td>
+            </tr>
+            <tr>
+                <td>Белки</td>
+                <td>{{product.protein}} г.</td>
+            </tr>
+            <tr>
+                <td>Жиры</td>
+                <td>{{product.fat}} г.</td>
+            </tr>
+            <tr>
+                <td>Углеводы</td>
+                <td>{{product.carbohydrates}} г.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

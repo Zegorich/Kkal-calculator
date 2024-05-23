@@ -1,10 +1,12 @@
-{% extends 'calculator/layout.html '%}
+{% extends 'calculator/layout.html'%}
 
 
 {% block content %}
-<ul>
-    {% for product in products %}
+<div class="container">
+    <ul class="list-unstyled">
+        {% for product in products %}
         <li><a href="{% url 'calculator:product' productid=product.pk %}">{{ product.name }}</a></li>
-    {% endfor %}
-</ul>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

@@ -1,35 +1,51 @@
-{% extends 'calculator/base.html' %}
+{% extends 'calculator/layout.html' %}
 
 
 
 {% block content %}
-
+<div class="container">
     <form method="post">
         {% csrf_token %}
-        <label for="age">Введите возраст:</label>
-        <input type="number" min="1" max="100" id="age" name="age" placeholder="Возраст" required><br>
-        <label for="weight">Введите вес:</label>
-        <input type="number" min="0" id="weight" name="weight" placeholder="Вес в кг." required><br>
-        <label for="height">Введите рост:</label>
-        <input type="number" min="0" id="height" name="height" placeholder="Рост в см." required><br>
-        <label>Укажите ваш пол:<br>
-            <input type="radio" id="male" name="sex" value="male" required>
-            <label for="male">Мужчина</label><br>
-            <input type="radio" id="female" name="sex" value="female" required>
-            <label for="female">Женщина</label><br>
-        </label>
-        <label for="activity">Выберите уровень активности:</label>
-        <select name="activity" id="activity" required>
-            <option value="1.2" title="сидячая работа, не требующая значительных физических нагрузок;">минимальная активность</option>
-            <option value="1.375" title="интенсивные упражнения не менее 20 минут один-три раза в неделю;">слабый уровень активности</option>
-            <option value="1.55" title="интенсивная тренировка не менее 30-60 мин три-четыре раза в неделю;">умеренный уровень активности</option>
-            <option value="1.7" title="интенсивные упражнения и занятия спортом 5-7 дней в неделю;">тяжелая или трудоемкая активность</option>
-            <option value="1.9" title="занятия спортом с почти ежедневным графиком и несколькими тренировками в течение дня.">экстремальный уровень</option>
-        </select><br>
-        <input type="submit">
+        <div class="row" style="width: 600px; margin-bottom: 40px;">
+            <div class="col-md-6">
+                <label for="age" class="form-label">Введите возраст:</label>
+                <input type="number" class="form-control" min="1" max="100" id="age" name="age" placeholder="Возраст" required><br>
+                <label for="weight" class="form-label">Введите вес:</label>
+                <input type="number" class="form-control" min="0" id="weight" name="weight" placeholder="Вес в кг." required><br>
+                <label for="height" class="form-label">Введите рост:</label>
+                <input type="number" class="form-control" min="0" id="height" name="height" placeholder="Рост в см." required><br>
+            </div>
+
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>
+                        Укажите ваш пол:
+                    </legend>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="male" name="sex" value="male" required>
+                        <label for="male" class="form-check-label">Мужчина</label><br>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" id="female" name="sex" value="female" required>
+                        <label for="female" class="form-check-label">Женщина</label><br>
+                    </div>
+                </fieldset>
+
+                <label for="activity" class="form-label">Выберите уровень активности:</label>
+                <select class="form-select" name="activity" id="activity" required>
+                    <option value="1.2" title="сидячая работа, не требующая значительных физических нагрузок;">минимальная активность</option>
+                    <option value="1.375" title="интенсивные упражнения не менее 20 минут один-три раза в неделю;">слабый уровень активности</option>
+                    <option value="1.55" title="интенсивная тренировка не менее 30-60 мин три-четыре раза в неделю;">умеренный уровень активности</option>
+                    <option value="1.7" title="интенсивные упражнения и занятия спортом 5-7 дней в неделю;">тяжелая или трудоемкая активность</option>
+                    <option value="1.9" title="занятия спортом с почти ежедневным графиком и несколькими тренировками в течение дня.">экстремальный уровень</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Отправить</button>
+        </div>
     </form>
+
     {% if calories %}
-        <table border="1px solid black">
+    <table class="table-bordered">
         <thead>
             <tr>
                 <th></th>
@@ -39,7 +55,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr style="text-align:center;">
                 <th>Суточное потребление калорий, ккал</th>
                 <td>{{calories.cut.0}} - {{calories.cut.1}}</td>
                 <td>{{calories.calculate_calories_intake}}</td>
@@ -48,4 +64,5 @@
         </tbody>
     </table>
     {% endif %}
+</div>
 {% endblock %}

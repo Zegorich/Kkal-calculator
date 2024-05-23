@@ -209,7 +209,9 @@ def profile_view(request):
         else:
             messages.error(request, 'Ошибка обновления профиля. Пожалуйста, заполните все поля правильно.')
         return redirect('/profile')
-    return render(request, 'registration/profile.html', context={'user': user})
+    context = {'user' : user,
+               'menu' : menu,}
+    return render(request, 'registration/profile.html', context=context)
 
 
 

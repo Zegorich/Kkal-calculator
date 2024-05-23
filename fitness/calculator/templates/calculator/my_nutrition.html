@@ -6,94 +6,105 @@
 
 
 
+
+
+{% block head %}
+<!-- Подключение jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Подключение jQuery UI -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+{% endblock %}
+
 {% block content %}
 
-<head>
-    <!-- Подключение jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-    <!-- Подключение jQuery UI -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-
-<form method="post">
-    {% csrf_token %}
-    <label for="product">Выберите продукт:</label>
-    <input type="text" id="product-search" name="product-search"><br>
-    <label for="weight">Введите вес продукта в граммах:</label>
-    <input type="number" min="0" id="weight" name="weight"><br>
-    <label for="meal">Введите номер приема пищи:</label>
-    <input type="number" min="1" max="4" id="meal" name="meal"><br>
-    <input type="submit" value="Добавить продукт">
-</form>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div style="width: 400px; margin-bottom: 40px;">
+            <label for="product" class="form-label">Выберите продукт:</label>
+            <input type="text" class="form-control" id="product-search" name="product-search"><br>
+            <label for="weight" class="form-label">Введите вес продукта в граммах:</label>
+            <input type="number" class="form-control" min="0" id="weight" name="weight"><br>
+            <label for="meal" class="form-label">Введите номер приема пищи:</label>
+            <input type="number" class="form-control" min="1" max="4" id="meal" name="meal"><br>
+            <button type="submit" class="btn btn-primary" value="Добавить продукт">Добавить продукт</button>
+        </div>
+    </form>
 
     <script>
-    $(function() {
-        $("#product-search").autocomplete({
-            source: '/search_products/',
-            minLength: 2,
-            select: function(event, ui) {
-                $('#product-search').val(ui.item.value);
-            }
+        $(function () {
+            $("#product-search").autocomplete({
+                source: '/search_products/',
+                minLength: 2,
+                select: function (event, ui) {
+                    $('#product-search').val(ui.item.value);
+                }
+            });
         });
-    });
     </script>
     <hr>
     {% if products %}
-        <h2>Завтрак</h2>
-        <ul>
-            {% for p in products.1 %}
-                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-                <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
-                </li>
-            {% endfor %}
-        </ul>
-        <h2>Обед</h2>
-        <ul>
-            {% for p in products.2 %}
-                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-                <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
-                </li>
-            {% endfor %}
-        </ul>
-        <h2>Ужин</h2>
-        <ul>
-            {% for p in products.3 %}
-                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-                <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
-                </li>
-            {% endfor %}
-        </ul>
-        <h2>Перекус</h2>
-        <ul>
-            {% for p in products.4 %}
-                <li>{{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
-                <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
-                </li>
-            {% endfor %}
-        </ul>
+    <h2>Завтрак</h2>
+    <ul>
+        {% for p in products.1 %}
+        <li>
+            {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
+            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Обед</h2>
+    <ul>
+        {% for p in products.2 %}
+        <li>
+            {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
+            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Ужин</h2>
+    <ul>
+        {% for p in products.3 %}
+        <li>
+            {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
+            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Перекус</h2>
+    <ul>
+        {% for p in products.4 %}
+        <li>
+            {{p.0}} - {{p.1}}ккал - {{p.2}}б - {{p.3}}ж - {{p.4}}у - {{p.5}}г
+            <button class="delete-product" data-product-id="{{p.id}}">Удалить</button>
+        </li>
+        {% endfor %}
+    </ul>
 
     <button id="clear-all">Очистить все</button>
 
 
-<script>
-    $(function() {
-        // Обработчик для кнопки "Удалить"
-        $(".delete-product").on("click", function() {
-            const productId = $(this).data("product-id");
-            // Отправьте запрос на сервер для удаления продукта с указанным ID
-            // (используйте AJAX или другой метод)
-        });
+    <script>
+        $(function () {
+            // Обработчик для кнопки "Удалить"
+            $(".delete-product").on("click", function () {
+                const productId = $(this).data("product-id");
+                // Отправьте запрос на сервер для удаления продукта с указанным ID
+                // (используйте AJAX или другой метод)
+            });
 
-        // Обработчик для кнопки "Очистить все"
-        $("#clear-all").on("click", function() {
-            // Отправьте запрос на сервер для удаления всех продуктов
-            // (используйте AJAX или другой метод)
+            // Обработчик для кнопки "Очистить все"
+            $("#clear-all").on("click", function () {
+                // Отправьте запрос на сервер для удаления всех продуктов
+                // (используйте AJAX или другой метод)
+            });
         });
-    });
-</script>
+    </script>
 
 
     {% endif %}
+</div>
 {% endblock %}
